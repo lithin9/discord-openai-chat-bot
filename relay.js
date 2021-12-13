@@ -25,17 +25,18 @@ let data = {
 
 class Relay {
 	static async relayMessage(message, userName, channelId, callApi = false) {
-		data.prompt = "The following is a conversation with an AI assistant named Missy. Missy, the assistant, is helpful, creative, clever, and very friendly.\n\n";
 		//Get or create new file.
 		let currentChatContext = chatContextHandler.getFile(channelId);
+		data.prompt = '';
 		if(currentChatContext === undefined) {
+			data.prompt = "The following is a conversation with an AI assistant named Missy. Missy, the assistant, is helpful, creative, clever, and very friendly.\n\n";
 			currentChatContext = '';
 		}
 		currentChatContext = currentChatContext /*+ userName + ": "*/ + message + "\n"
 		let promptLines = currentChatContext.split('\n');
 		if(promptLines.length > (maxLines)) {
-			console.log(["Removing Lines:", (promptLines.length - maxLines)])
-			promptLines.splice(0, (promptLines.length - maxLines));
+			console.log(["Removing Lines:", ((promptLines.length) - maxLines)])
+			promptLines.splice(3, ((promptLines.length - 3) - maxLines));
 			currentChatContext = promptLines.join('\n');
 		}
 		data.prompt = data.prompt + currentChatContext;

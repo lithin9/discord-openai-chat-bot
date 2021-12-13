@@ -6,3 +6,8 @@ To run this in oracle's servers (after installing the proper shit (node16, and t
 run the command: nohup node bot.js &
 then run disown
 now it should log in within a few seconds and begin recording conversation context.
+
+You can tail the output with tail -f nohup.out
+
+
+to restart it simply run ps -ef to find the nohup process then kill it and run the command again. kill <process id>

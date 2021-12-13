@@ -31,7 +31,7 @@ class Relay {
 		if(currentChatContext === undefined) {
 			currentChatContext = '';
 		}
-		currentChatContext = currentChatContext + userName + ": " + message + "\n"
+		currentChatContext = currentChatContext /*+ userName + ": "*/ + message + "\n"
 		let promptLines = currentChatContext.split('\n');
 		if(promptLines.length > (maxLines)) {
 			console.log(["Removing Lines:", (promptLines.length - maxLines)])
@@ -46,7 +46,7 @@ class Relay {
 		}
 		const result = await axios.post(url, data, config);
 		if(result.data.choices[0].text !== '') {
-			data.prompt = data.prompt + "Missy: " + result.data.choices[0].text + "\n";
+			data.prompt = data.prompt /*+ "Missy: "*/ + result.data.choices[0].text + "\n";
 		}
 		chatContextHandler.saveFile(channelId, data.prompt);
 

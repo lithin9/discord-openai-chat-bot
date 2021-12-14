@@ -21,9 +21,9 @@ let data = {
 	"frequency_penalty": 0,
 	"presence_penalty": 0.6,
 	"stop": [
-		"\n",
+		"\n",/*
 		"Human:",
-		"AI:"]
+		"AI:"*/]
 };
 
 class Relay {
@@ -35,7 +35,7 @@ class Relay {
 			data.prompt = chatContextHandler.basePrompt;
 			currentChatContext = '';
 		}
-		currentChatContext = currentChatContext + "\nHuman: " + message.trim();
+		currentChatContext = currentChatContext /*+ "\nHuman: "*/ + message.trim();
 		let promptLines = currentChatContext.split('\n');
 		if(promptLines.length > (maxLines)) {
 			console.log([
@@ -55,10 +55,10 @@ class Relay {
 		const result = await axios.post(url, data, config);
 		let returnMessage = '';
 		if(result.data.choices[0].text !== '') {
-			data.prompt = data.prompt + "\nAI: " + result.data.choices[0].text.trim();
+			data.prompt = data.prompt /*+ "\nAI: "*/ + result.data.choices[0].text.trim();
 			returnMessage = result.data.choices[0].text;
 		} else {
-			data.prompt = data.prompt + "\nAI: " + chatContextHandler.emptyResponseMessage;
+			data.prompt = data.prompt /*+ "\nAI: "*/ + chatContextHandler.emptyResponseMessage;
 			returnMessage = chatContextHandler.emptyResponseMessage;
 		}
 		chatContextHandler.saveFile(channelId, data.prompt);

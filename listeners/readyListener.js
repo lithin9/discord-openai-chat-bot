@@ -26,7 +26,7 @@ class ReadyListener extends Listener {
 							value.messages.fetch({limit: maxLines}).then(channelMessages => {
 								let messageHistory = '';
 								channelMessages.forEach(channelMessage => {
-									let prefix = channelMessage.author.id === botUserId ? 'AI: ' : 'Human: ';
+									let prefix = '';//channelMessage.author.id === botUserId ? 'AI: ' : 'Human: ';
 									let messageContent = channelMessage.content.replace("<@!" + botUserId + ">", '')
 																										 .replace("<@" + botUserId + ">", '')
 																										 .replace("\n", ' ')

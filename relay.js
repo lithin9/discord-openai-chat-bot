@@ -5,6 +5,7 @@ const chatContextHandler = require('./chatContextHandler');
 const key = process.env.OPENAI_API_KEY;
 const url = process.env.OPENAI_API_URL;
 const maxLines = parseInt(process.env.MAX_NUMBER_OF_PROMPT_LINES);
+const basePromptLength = parseIn(process.env.BASE_PROMPT_LENGTH);
 const config = {
 	headers: {
 		"Content-Type": "application/json", "Authorization": "Bearer " + key
@@ -40,7 +41,7 @@ class Relay {
 			console.log([
 										"Removing Lines:",
 										((promptLines.length) - maxLines)])
-			promptLines.splice(3, ((promptLines.length - 3) - maxLines));
+			promptLines.splice(basePromptLength, ((promptLines.length - basePromptLength) - maxLines));
 			currentChatContext = promptLines.join('\n');
 		}
 		data.prompt = data.prompt + currentChatContext;

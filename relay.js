@@ -18,8 +18,8 @@ let data = {
 	"max_tokens": 150,
 	"top_p": 1,
 	"best_of": 1,
-	"frequency_penalty": -0.5,
-	"presence_penalty": 0.7,
+	"frequency_penalty": 0,
+	"presence_penalty": 0.6,
 	"stop": [
 		"\n",
 		"Human:",

@@ -14,12 +14,12 @@ const config = {
 let data = {
 	"model": "davinci:2020-05-03",
 	"prompt": "",
-	"temperature": 0.75,
+	"temperature": 0.8,
 	"max_tokens": 150,
 	"top_p": 1,
 	"best_of": 1,
 	"frequency_penalty": 0,
-	"presence_penalty": 0.6,
+	"presence_penalty": 0.65,
 	"stop": [
 		"\n",/*
 		"Human:",

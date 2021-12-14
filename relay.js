@@ -5,7 +5,7 @@ const chatContextHandler = require('./chatContextHandler');
 const key = process.env.OPENAI_API_KEY;
 const url = process.env.OPENAI_API_URL;
 const maxLines = parseInt(process.env.MAX_NUMBER_OF_PROMPT_LINES);
-const basePromptLength = parseIn(process.env.BASE_PROMPT_LENGTH);
+const basePromptLength = parseInt(process.env.BASE_PROMPT_LENGTH);
 const config = {
 	headers: {
 		"Content-Type": "application/json", "Authorization": "Bearer " + key

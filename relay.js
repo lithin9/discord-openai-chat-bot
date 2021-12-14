@@ -14,7 +14,7 @@ const config = {
 let data = {
 	"model": "davinci:2020-05-03",
 	"prompt": "",
-	"temperature": 0.9,
+	"temperature": 0.75,
 	"max_tokens": 150,
 	"top_p": 1,
 	"best_of": 1,
@@ -52,16 +52,18 @@ class Relay {
 			chatContextHandler.saveFile(channelId, data.prompt);
 			return null;
 		}
+		let sentDataPrompt = data.prompt;
+		data.prompt = data.prompt + "\n";
 		const result = await axios.post(url, data, config);
 		let returnMessage = '';
 		if(result.data.choices[0].text !== '') {
-			data.prompt = data.prompt + "\n" /*+ "\nAI: "*/ + result.data.choices[0].text.trim();
+			sentDataPrompt = sentDataPrompt + "\n" /*+ "\nAI: "*/ + result.data.choices[0].text.trim();
 			returnMessage = result.data.choices[0].text;
 		} else {
-			data.prompt = data.prompt + "\n" /*+ "\nAI: "*/ + chatContextHandler.emptyResponseMessage;
+			sentDataPrompt = sentDataPrompt + "\n" /*+ "\nAI: "*/ + chatContextHandler.emptyResponseMessage;
 			returnMessage = chatContextHandler.emptyResponseMessage;
 		}
-		chatContextHandler.saveFile(channelId, data.prompt);
+		chatContextHandler.saveFile(channelId, sentDataPrompt);
 
 		return returnMessage;
 	}

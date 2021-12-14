@@ -2,6 +2,7 @@ const {Listener} = require('@sapphire/framework');
 const {Permissions} = require('discord.js');
 const chatContextHandler = require('../chatContextHandler');
 const botUserId = process.env.BOT_USER_ID;
+const maxLines = parseInt(process.env.MAX_NUMBER_OF_PROMPT_LINES);
 
 class ReadyListener extends Listener {
 	constructor(context, options) {
@@ -22,7 +23,7 @@ class ReadyListener extends Listener {
 					 && permissionCheck.has(Permissions.FLAGS.VIEW_CHANNEL)) {
 					if(value.messages !== undefined) {
 						try {
-							value.messages.fetch({limit: 45}).then(channelMessages => {
+							value.messages.fetch({limit: maxLines}).then(channelMessages => {
 								let messageHistory = '';
 								channelMessages.forEach(channelMessage => {
 									let prefix = channelMessage.author.id === botUserId ? 'AI: ' : 'Human: ';

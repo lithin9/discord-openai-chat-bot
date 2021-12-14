@@ -28,13 +28,11 @@ class MessageCreationListener extends Listener {
 		let messageContent = message.content;
 		let channelId = message.channelId;
 		messageContent = messageContent.replace("<@!" + botUserId + ">", '')
+																	 .replace("<@" + botUserId + ">", '')
+																	 .replace("\n", ' ');
 		let usersName = message.author.username;
 		if(botPinged || randomChance === maxResponseChance) {
-			let response = await Relay.relayMessage(messageContent,usersName, channelId, true);
-			if(response === '') {
-				response =
-					"Ah!! You're unlucky, I was activated by your message but no AI response was given... You've now got 1 minute worth of bad luck :(";
-			}
+			let response = await Relay.relayMessage(messageContent, usersName, channelId, true);
 			console.log([
 										'responding with',
 										response]);

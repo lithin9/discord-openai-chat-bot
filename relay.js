@@ -7,20 +7,22 @@ const url = process.env.OPENAI_API_URL;
 const maxLines = parseInt(process.env.MAX_NUMBER_OF_PROMPT_LINES);
 const config = {
 	headers: {
-		"Content-Type": "application/json",
-		"Authorization": "Bearer " + key
+		"Content-Type": "application/json", "Authorization": "Bearer " + key
 	}
 }
 let data = {
 	"model": "davinci:2020-05-03",
 	"prompt": "",
-	"temperature": 0.85,
-	"max_tokens": 54,
+	"temperature": 0.9,
+	"max_tokens": 150,
 	"top_p": 1,
 	"best_of": 1,
-	"frequency_penalty": 0,
-	"presence_penalty": 0,
-	"stop": ["\n"]
+	"frequency_penalty": -0.5,
+	"presence_penalty": 0.7,
+	"stop": [
+		"\n",
+		"Human:",
+		"AI:"]
 };
 
 class Relay {
@@ -29,29 +31,38 @@ class Relay {
 		let currentChatContext = chatContextHandler.getFile(channelId);
 		data.prompt = '';
 		if(currentChatContext === undefined) {
-			data.prompt = "The following is a conversation with an AI assistant named Missy. Missy, the assistant, is helpful, creative, clever, and very friendly.\n\n";
+			data.prompt = chatContextHandler.basePrompt;
 			currentChatContext = '';
 		}
-		currentChatContext = currentChatContext /*+ userName + ": "*/ + message + "\n"
+		currentChatContext = currentChatContext + "\nHuman: " + message.trim();
 		let promptLines = currentChatContext.split('\n');
 		if(promptLines.length > (maxLines)) {
-			console.log(["Removing Lines:", ((promptLines.length) - maxLines)])
+			console.log([
+										"Removing Lines:",
+										((promptLines.length) - maxLines)])
 			promptLines.splice(3, ((promptLines.length - 3) - maxLines));
 			currentChatContext = promptLines.join('\n');
 		}
 		data.prompt = data.prompt + currentChatContext;
-		console.log(['Current Data Prompt:', data.prompt]);
+		console.log([
+									'Current Data Prompt:',
+									data.prompt]);
 		if(!callApi) {
 			chatContextHandler.saveFile(channelId, data.prompt);
 			return null;
 		}
 		const result = await axios.post(url, data, config);
+		let returnMessage = '';
 		if(result.data.choices[0].text !== '') {
-			data.prompt = data.prompt /*+ "Missy: "*/ + result.data.choices[0].text + "\n";
+			data.prompt = data.prompt + "\nAI: " + result.data.choices[0].text.trim();
+			returnMessage = result.data.choices[0].text;
+		} else {
+			data.prompt = data.prompt + "\nAI: " + chatContextHandler.emptyResponseMessage;
+			returnMessage = chatContextHandler.emptyResponseMessage;
 		}
 		chatContextHandler.saveFile(channelId, data.prompt);
 
-		return result.data.choices[0].text;
+		return returnMessage;
 	}
 }
 

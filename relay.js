@@ -12,7 +12,7 @@ const config = {
 	}
 }
 let data = {
-	"model": "davinci:2020-05-03",
+	//"model": "davinci:2020-05-03", // Not needed in Codex (to switch back change the env var url
 	"prompt": "",
 	"temperature": 0.8,
 	"max_tokens": 150,

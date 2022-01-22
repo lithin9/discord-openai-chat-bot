@@ -12,7 +12,7 @@ const config = {
 	}
 }
 let data = {
-	//"model": "davinci:2020-05-03", // Not needed in Codex (to switch back change the env var url
+	//"model": "davinci:2020-05-03", // Not needed in Codex (to switch back change the env var url)
 	"prompt": "",
 	"temperature": 0.8,
 	"max_tokens": 150,
@@ -35,6 +35,9 @@ class Relay {
 			data.prompt = chatContextHandler.basePrompt;
 			currentChatContext = '';
 		}
+		if(message === '') {
+			return null;
+		}
 		currentChatContext = currentChatContext + "\n"/*+ "Human: "*/ + message.trim();
 		let promptLines = currentChatContext.split('\n');
 		if(promptLines.length > (maxLines)) {
@@ -45,6 +48,9 @@ class Relay {
 			currentChatContext = promptLines.join('\n');
 		}
 		data.prompt = data.prompt + currentChatContext;
+		while(data.prompt.includes("\n\n")) {
+			data.prompt = data.prompt.replace("\n\n", "\n");
+		}
 		console.log([
 									'Current Data Prompt:',
 									data.prompt]);

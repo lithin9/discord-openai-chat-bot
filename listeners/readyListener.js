@@ -25,14 +25,22 @@ class ReadyListener extends Listener {
 						try {
 							value.messages.fetch({limit: maxLines}).then(channelMessages => {
 								let messageHistory = '';
+								let counter = 0;
 								channelMessages.forEach(channelMessage => {
 									let prefix = '';//channelMessage.author.id === botUserId ? 'AI: ' : 'Human: ';
 									let messageContent = channelMessage.content.replace("<@!" + botUserId + ">", '')
 																										 .replace("<@" + botUserId + ">", '')
 																										 .replace("\n", ' ')
 																										 .trim();
-									messageHistory = "\n" + prefix + messageContent + messageHistory;
+									if (++counter === 50) {
+										messageHistory = prefix + messageContent + messageHistory;
+									} else {
+										messageHistory = "\n" + prefix + messageContent + messageHistory;
+									}
 								});
+								while(messageHistory.includes("\n\n")) {
+									messageHistory = messageHistory.replace("\n\n", "\n");
+								}
 								messageHistory = chatContextHandler.basePrompt + messageHistory;
 								chatContextHandler.saveFile(channelId, (messageHistory));
 

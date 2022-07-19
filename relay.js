@@ -13,24 +13,24 @@ const config = {
 }
 let data = {
 	//"model": "davinci:2020-05-03", // Not needed in Codex (to switch back change the env var url)
-	"prompt": "",
-	"temperature": 0.95,
-	"max_tokens": 200,
+	"prompt": "The following is a conversation with an AI assistant named Missy. The assistant is sarcastic, creative, clever, and loves cryptocurrency scams.\n",
+	"temperature": 0.90,
+	"max_tokens": 252,
 	"top_p": 1,
 	"best_of": 1,
 	"frequency_penalty": 0,
-	"presence_penalty": 0.65,
+	"presence_penalty": 0.9,
 	"stop": [
-		"\n",/*
 		"Human:",
-		"AI:"*/]
+		//"Missy:",
+		"\n"]
 };
 
 class Relay {
 	static async relayMessage(message, userName, channelId, callApi = false) {
 		//Get or create new file.
 		let currentChatContext = chatContextHandler.getFile(channelId);
-		data.prompt = '';
+		//data.prompt = '';
 		if(currentChatContext === undefined) {
 			data.prompt = chatContextHandler.basePrompt;
 			currentChatContext = '';
@@ -38,35 +38,42 @@ class Relay {
 		if(message === '') {
 			return null;
 		}
-		currentChatContext = currentChatContext + "\n"/*+ "Human: "*/ + message.trim();
+		currentChatContext = currentChatContext + "\nHuman: " + message.trim();
 		let promptLines = currentChatContext.split('\n');
 		if(promptLines.length > (maxLines)) {
-			console.log([
+			/*console.log([
 										"Removing Lines:",
-										((promptLines.length) - maxLines)])
+										((promptLines.length) - maxLines)])*/
 			promptLines.splice(basePromptLength, ((promptLines.length - basePromptLength) - maxLines));
 			currentChatContext = promptLines.join('\n');
 		}
 		data.prompt = data.prompt + currentChatContext;
-		while(data.prompt.includes("\n\n")) {
+		while (data.prompt.includes("\n\n")) {
 			data.prompt = data.prompt.replace("\n\n", "\n");
 		}
-		console.log([
+		/*console.log([
 									'Current Data Prompt:',
-									data.prompt]);
+									data.prompt]);*/
 		if(!callApi) {
 			chatContextHandler.saveFile(channelId, data.prompt);
 			return null;
 		}
 		let sentDataPrompt = data.prompt;
-		data.prompt = data.prompt + "\n";
+		data.prompt = data.prompt + "\nMissy:";
+		//console.log(data);
 		const result = await axios.post(url, data, config);
 		let returnMessage = '';
+		if(result.isAxiosError === true) {
+			console.log(result.data.error);
+			return "Wow you broke it.";
+		}
 		if(result.data.choices[0].text !== '') {
-			sentDataPrompt = sentDataPrompt + "\n" /*+ "\nAI: "*/ + result.data.choices[0].text.trim();
+			console.log(result.data.choices);
+			sentDataPrompt = sentDataPrompt + "\nMissy: " + result.data.choices[0].text.trim();
 			returnMessage = result.data.choices[0].text;
 		} else {
-			sentDataPrompt = sentDataPrompt + "\n" /*+ "\nAI: "*/ + chatContextHandler.emptyResponseMessage;
+			console.log(result.data);
+			sentDataPrompt = sentDataPrompt + "\nMissy: " + chatContextHandler.emptyResponseMessage;
 			returnMessage = chatContextHandler.emptyResponseMessage;
 		}
 		chatContextHandler.saveFile(channelId, sentDataPrompt);

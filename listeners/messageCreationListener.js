@@ -17,7 +17,7 @@ class MessageCreationListener extends Listener {
 		if(authorId === botUserId) {
 			return false;
 		}
-		console.log("Message received.");
+		//console.log("Message received.");
 		let botPinged = false;
 		if(message.mentions !== []) {
 			if(message.mentions.users.has(botUserId)) {

@@ -3,6 +3,7 @@ It will respond when directly mentioned or if it hits the 5% (can be changed in 
 
 
 To run this in oracle's servers (after installing the proper shit (node16, and then running node install in the base directory of this project)
+base directory: /var/discordBot/
 run the following command in the base directory: nohup node bot.js &
 then run disown
 now it should log in within a few seconds and begin recording conversation context.

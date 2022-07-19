@@ -13,7 +13,7 @@ const config = {
 }
 let data = {
 	//"model": "davinci:2020-05-03", // Not needed in Codex (to switch back change the env var url)
-	"prompt": "The following is a conversation with an AI assistant named Missy. The assistant is sarcastic, creative, clever, and loves cryptocurrency scams.\n",
+	"prompt": "",
 	"temperature": 0.90,
 	"max_tokens": 252,
 	"top_p": 1,
@@ -30,7 +30,7 @@ class Relay {
 	static async relayMessage(message, userName, channelId, callApi = false) {
 		//Get or create new file.
 		let currentChatContext = chatContextHandler.getFile(channelId);
-		//data.prompt = '';
+		data.prompt = '';
 		if(currentChatContext === undefined) {
 			data.prompt = chatContextHandler.basePrompt;
 			currentChatContext = '';
@@ -41,9 +41,9 @@ class Relay {
 		currentChatContext = currentChatContext + "\nHuman: " + message.trim();
 		let promptLines = currentChatContext.split('\n');
 		if(promptLines.length > (maxLines)) {
-			/*console.log([
+			console.log([
 										"Removing Lines:",
-										((promptLines.length) - maxLines)])*/
+										((promptLines.length) - maxLines)])
 			promptLines.splice(basePromptLength, ((promptLines.length - basePromptLength) - maxLines));
 			currentChatContext = promptLines.join('\n');
 		}
@@ -65,9 +65,8 @@ class Relay {
 		let returnMessage = '';
 		if(result.isAxiosError === true) {
 			console.log(result.data.error);
-			return "Wow you broke it.";
-		}
-		if(result.data.choices[0].text !== '') {
+			returnMessage = "Wow you broke it.";
+		} else if(result.data.choices[0].text !== '') {
 			console.log(result.data.choices);
 			sentDataPrompt = sentDataPrompt + "\nMissy: " + result.data.choices[0].text.trim();
 			returnMessage = result.data.choices[0].text;

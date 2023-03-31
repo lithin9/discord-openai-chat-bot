@@ -12,14 +12,15 @@ const config = {
 	}
 }
 let data = {
-	//"model": "davinci:2020-05-03", // Not needed in Codex (to switch back change the env var url)
+	//"model": "davinci:2020-05-03", // Not needed in Codex (to switch back change the env var url)  --- https://api.openai.com/v1/engines/code-davinci-001/completions
+	"model": "ada",
 	"prompt": "",
 	"temperature": 0.90,
-	"max_tokens": 252,
+	"max_tokens": 50,
 	"top_p": 1,
 	"best_of": 1,
-	"frequency_penalty": 0,
-	"presence_penalty": 0.9,
+	"frequency_penalty": 0.95,
+	"presence_penalty": 0.05,
 	"stop": [
 		"Human:",
 		//"Missy:",
@@ -30,9 +31,8 @@ class Relay {
 	static async relayMessage(message, userName, channelId, callApi = false) {
 		//Get or create new file.
 		let currentChatContext = chatContextHandler.getFile(channelId);
-		data.prompt = '';
+		data.prompt = chatContextHandler.basePrompt;
 		if(currentChatContext === undefined) {
-			data.prompt = chatContextHandler.basePrompt;
 			currentChatContext = '';
 		}
 		if(message === '') {
@@ -61,17 +61,19 @@ class Relay {
 		let sentDataPrompt = data.prompt;
 		data.prompt = data.prompt + "\nMissy:";
 		//console.log(data);
+		console.log("WOW WE ARE POSTING!");
 		const result = await axios.post(url, data, config);
 		let returnMessage = '';
 		if(result.isAxiosError === true) {
-			console.log(result.data.error);
+			console.log({'error message': result.data.error});
 			returnMessage = "Wow you broke it.";
 		} else if(result.data.choices[0].text !== '') {
-			console.log(result.data.choices);
+			console.log({'choices': result.data.choices});
 			sentDataPrompt = sentDataPrompt + "\nMissy: " + result.data.choices[0].text.trim();
 			returnMessage = result.data.choices[0].text;
 		} else {
-			console.log(result.data);
+			console.log({'returned choices': result.data.choices});
+			console.log({'returned errors': result.data.error});
 			sentDataPrompt = sentDataPrompt + "\nMissy: " + chatContextHandler.emptyResponseMessage;
 			returnMessage = chatContextHandler.emptyResponseMessage;
 		}

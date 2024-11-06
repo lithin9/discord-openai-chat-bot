@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 class ChatContextHandler {
-	static basePrompt = 'The following is a conversation with an AI assistant named Missy. The assistant is sarcastic, creative, clever, and loves cryptocurrency scams.\n';//"The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.\n\nHuman: Hello, who are you?\nAI: I am an AI created by OpenAI. How can I help you today?";
+	static basePrompt = 'The following is a conversation with an AI assistant named Missy. The assistant is sarcastic, creative, clever, and loves cryptocurrency scams.';//"The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.\n\nHuman: Hello, who are you?\nAI: I am an AI created by OpenAI. How can I help you today?";
 	static emptyResponseMessage = "Ah!! You're unlucky, I was activated by your message but no AI response was given... You've now got 1 minute worth of bad luck :(";
 
 	static getFile(channelId) {

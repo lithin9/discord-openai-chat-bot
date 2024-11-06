@@ -2,32 +2,21 @@ require('dotenv').config();
 
 const axios = require('axios').default;
 const chatContextHandler = require('./chatContextHandler');
-const key = process.env.OPENAI_API_KEY;
-const url = process.env.OPENAI_API_URL;
+const key = process.env.KOBOLDAI_API_KEY;
+const url = process.env.KOBOLDAI_API_URL;
 const maxLines = parseInt(process.env.MAX_NUMBER_OF_PROMPT_LINES);
 const basePromptLength = parseInt(process.env.BASE_PROMPT_LENGTH);
 const config = {
 	headers: {
-		"Content-Type": "application/json", "Authorization": "Bearer " + key
+		"Content-Type": "application/json", "apikey": key
 	}
 }
 let data = {
-	//"model": "davinci:2020-05-03", // Not needed in Codex (to switch back change the env var url)  --- https://api.openai.com/v1/engines/code-davinci-001/completions
-	"model": "ada",
 	"prompt": "",
-	"temperature": 0.90,
-	"max_tokens": 50,
-	"top_p": 1,
-	"best_of": 1,
-	"frequency_penalty": 0.95,
-	"presence_penalty": 0.05,
-	"stop": [
-		"Human:",
-		//"Missy:",
-		"\n"]
+	"max_tokens": 100
 };
 
-class Relay {
+class Relay_KoboldAI {
 	static async relayMessage(message, userName, channelId, callApi = false) {
 		//Get or create new file.
 		let currentChatContext = chatContextHandler.getFile(channelId);
@@ -83,4 +72,4 @@ class Relay {
 	}
 }
 
-module.exports = Relay;
+module.exports = Relay_KoboldAI;

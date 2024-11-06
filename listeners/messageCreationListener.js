@@ -1,6 +1,9 @@
 require('dotenv').config();
 const {Listener} = require('@sapphire/framework');
-const Relay = require('../relay');
+const Relay_KoboldAI = require('../relay_koboldai');
+const Relay_OpenAI = require('../relay_openai');
+const Relay_TextCortex = require('../relay_textcortex');
+const Relay_Google = require('../relay_google');
 const minResponseChance = 1;
 const maxResponseChance = parseInt(process.env.MAX_RESPONSE_CHANCE);
 const botUserId = process.env.BOT_USER_ID;
@@ -29,18 +32,22 @@ class MessageCreationListener extends Listener {
 		let channelId = message.channelId;
 		messageContent = messageContent.replace("<@!" + botUserId + ">", '')
 																	 .replace("<@" + botUserId + ">", '')
-																	 .replace("\n", ' ');
+																	 .replace(/\r?\n/g, ' ');
 		let usersName = message.author.username;
 		if(botPinged || randomChance === maxResponseChance) {
-			let response = await Relay.relayMessage(messageContent, usersName, channelId, true);
+			let response = await Relay_Google.relayMessage(messageContent, usersName, channelId, true);
 			console.log([
 										'responding with',
 										response]);
 
+			if(response === '') {
+				return null;
+			}
+
 			return message.reply(response);
 		} else {
 			console.log('adding message into prompt history and not requesting a response.');
-			await Relay.relayMessage(messageContent, usersName, channelId, false);
+			await Relay_Google.relayMessage(messageContent, usersName, channelId, false);
 		}
 	}
 }

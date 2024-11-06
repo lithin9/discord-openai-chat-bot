@@ -30,8 +30,9 @@ class ReadyListener extends Listener {
 									let prefix = channelMessage.author.id === botUserId ? 'Missy: ' : 'Human: '//`${channelMessage.author.username}: `;
 									let messageContent = channelMessage.content.replace("<@!" + botUserId + ">", '')
 																										 .replace("<@" + botUserId + ">", '')
-																										 .replace("\n", ' ')
+																										 .replace(/\r?\n/g, ' ')
 																										 .trim();
+									//console.log(messageContent);
 									if (++counter === 50) {
 										messageHistory = prefix + messageContent + messageHistory;
 									} else {

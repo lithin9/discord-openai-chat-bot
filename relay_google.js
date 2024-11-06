@@ -17,8 +17,23 @@ let data = {
 		{
 			"category": "HARM_CATEGORY_DANGEROUS_CONTENT",
 			"threshold": "BLOCK_NONE"
+		},
+		{
+			"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+			"threshold": "BLOCK_NONE"
+		},
+		{
+			"category": "HARM_CATEGORY_HATE_SPEECH",
+			"threshold": "BLOCK_NONE"
+		},
+		{
+			"category": "HARM_CATEGORY_HARASSMENT",
+			"threshold": "BLOCK_NONE"
 		}
 	],
+	"generationConfig": {
+		"temperature": 1.4, "maxOutputTokens": 400,
+	}
 };
 
 class Relay_Google {
@@ -101,8 +116,8 @@ class Relay_Google {
 
 		if(result.data.candidates[0].content.parts[0].text !== '') {
 			console.log({'choices': result.data.candidates[0].content.parts[0].text});
-			currentChatContext = currentChatContext + "\nMissy: " + result.data.candidates[0].content.parts[0].text.replace(/\r?\n/g, ' ').trim();
 			returnMessage = result.data.candidates[0].content.parts[0].text;
+			currentChatContext = currentChatContext + "\nMissy: " + result.data.candidates[0].content.parts[0].text.replace(/\r?\n/g, ' ').trim();
 		} else {
 			console.log({'returned choices': result.data.choices});
 			console.log({'returned errors': result.data.error});

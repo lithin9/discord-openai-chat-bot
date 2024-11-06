@@ -30,8 +30,8 @@ class MessageCreationListener extends Listener {
 		let randomChance = Math.floor(Math.random() * (maxResponseChance - minResponseChance + 1) + minResponseChance);
 		let messageContent = message.content;
 		let channelId = message.channelId;
-		messageContent = messageContent.replace("<@!" + botUserId + ">", '')
-																	 .replace("<@" + botUserId + ">", '')
+		messageContent = messageContent.replace("<@!" + botUserId + ">", 'Missy ')
+																	 .replace("<@" + botUserId + ">", 'Missy ')
 																	 .replace(/\r?\n/g, ' ');
 		let usersName = message.author.username;
 		if(botPinged || randomChance === maxResponseChance) {

@@ -28,8 +28,8 @@ class ReadyListener extends Listener {
 								let counter = 0;
 								channelMessages.forEach(channelMessage => {
 									let prefix = channelMessage.author.id === botUserId ? 'Missy: ' : 'Human: '//`${channelMessage.author.username}: `;
-									let messageContent = channelMessage.content.replace("<@!" + botUserId + ">", '')
-																										 .replace("<@" + botUserId + ">", '')
+									let messageContent = channelMessage.content.replace("<@!" + botUserId + ">", 'Missy ')
+																										 .replace("<@" + botUserId + ">", 'Missy ')
 																										 .replace(/\r?\n/g, ' ')
 																										 .trim();
 									//console.log(messageContent);

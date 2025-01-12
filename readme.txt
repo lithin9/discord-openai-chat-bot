@@ -13,6 +13,6 @@ You can tail the output with tail -f nohup.out
 
 to restart it simply run ps -ef to find the nohup process then kill it and run the command again. kill <process id>
 
-You can also run it with ndemon. To install nodemon type sudo npm install -g nodemon. To run it type nohup nodemon bot.js &
+You can also run it with nodemon. To install nodemon type sudo npm install -g nodemon. To run it type nohup nodemon bot.js &
 run disown
 Then it should restart the application automatically when you make changes.

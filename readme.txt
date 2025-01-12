@@ -1,3 +1,7 @@
+UPDATE 1/12/2025: a lot about this has changed, there are example files for connecting to different AI APIs. Right now this one is set up with
+Google's AI API. I don't really remember how well the others worked but I've swapped to this because it is free. Use this code with caution,
+it's messy and really needs to be cleaned up.
+
 Bot works by taking up to the last ## (amount defined in .env) lines of text (per channel) and sends it to the OpenAI API for a response.
 It will respond when directly mentioned or if it hits the 5% (can be changed in .env) chance to respond.
 

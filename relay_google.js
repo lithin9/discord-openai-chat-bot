@@ -32,7 +32,7 @@ let data = {
 		}
 	],
 	"generationConfig": {
-		"temperature": 1.4, "maxOutputTokens": 400,
+		"temperature": 1.8, "maxOutputTokens": 400,
 	}
 };
 
@@ -112,13 +112,14 @@ class Relay_Google {
 
 		let returnMessage = '';
 
-		console.log(JSON.stringify(result.data));
+		console.log(JSON.stringify(result?.data));
 
-		if(result.data.candidates[0].content.parts[0].text !== '') {
+		if(result?.data?.candidates[0]?.content?.parts[0]?.text !== '') {
 			console.log({'choices': result.data.candidates[0].content.parts[0].text});
 			returnMessage = result.data.candidates[0].content.parts[0].text;
 			currentChatContext = currentChatContext + "\nMissy: " + result.data.candidates[0].content.parts[0].text.replace(/\r?\n/g, ' ').trim();
 		} else {
+			console.log(result)
 			console.log({'returned choices': result.data.choices});
 			console.log({'returned errors': result.data.error});
 			returnMessage = chatContextHandler.emptyResponseMessage;

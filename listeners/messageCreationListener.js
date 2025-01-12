@@ -1,8 +1,8 @@
 require('dotenv').config();
 const {Listener} = require('@sapphire/framework');
-const Relay_KoboldAI = require('../relay_koboldai');
+/*const Relay_KoboldAI = require('../relay_koboldai');
 const Relay_OpenAI = require('../relay_openai');
-const Relay_TextCortex = require('../relay_textcortex');
+const Relay_TextCortex = require('../relay_textcortex');*/
 const Relay_Google = require('../relay_google');
 const minResponseChance = 1;
 const maxResponseChance = parseInt(process.env.MAX_RESPONSE_CHANCE);
